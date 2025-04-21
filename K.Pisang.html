@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kerepek Pisang (500 Gram)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css.css" />
+
+
+</head>
+<body>
+
+ <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <a href="#">
+          <img src="https://imgur.com/jCvm8qO.jpg" alt="Logo" style="height: 100px;">
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Kerepek.html">Kerepek</a></li> 
+        <li><a href="aboutus.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="Cart.html">Cart</a></li>
+      </ul>
+      
+      </ul>
+      <div class="cart-container">
+        <div class="cart-icon"id="cart-icon">
+          <i class="fa fa-shopping-cart"></i> Cart/RM<span id="cart-total">0.00</span>
+        </div>
+        <div class="mini-cart"id="mini-cart">
+          <p>Cart is empty.</p>
+        </div>
+      </div>
+      
+  </header>
+
+<div class="container">
+  <div style="display: flex; gap: 40px;">
+    <img src="https://imgur.com/ZypoUkV.jpg" alt="Kerepek Pisang" class="product-img">
+    <div class="product-info">
+      <h2>KEREPEK PISANG (500 Gram)</h2>
+      <div class="review-stars">★★★★★</div>
+      <div class="price">RM10.00</div>
+      <p class="stock-label in-stock" data-stock="2">In stock (2 left)</p>
+      <button class="add-to-cart-btn"
+        data-name="Kerepek Pisang (500g)"
+        data-price="10.00"
+        data-stock="2">
+        Add to Cart
+      </button>
+    </div>
+  </div>
+
+  <div class="reviews">
+    <h3>Reviews (5)</h3>
+    <div class="review-item">
+      <strong>Encik boss</strong> ★★★★★
+      <p>Kerepek paling sedap yang saya pernah temui.</p>
+    </div>
+    <div class="review-item">
+      <strong>Wahyu</strong> ★★★★★
+      <p>Sangat sangat sedappp</p>
+    </div>
+    <div class="review-item">
+      <strong>pak abu</strong> ★★★★★
+      <p>kerepek pisang ni sedap betul ya ..... lagi2 korang guna pisang emas ..... hussh sedap giler wooo</p>
+    </div>
+    <div class="review-item">
+      <strong>pak ali</strong> ★★★★★
+      <p>kalau kena kerepek ni tak ingat dunia woo.... lagi2 sambil tengok tv lagi layan.... tahu2 habis je</p>
+    </div>
+    <div class="review-item">
+      <strong>hakimi</strong> ★★★★★
+      <p>aku mewakili anak muda ingin memberitahu bahawa kerepek ini sangat sedap hingga menjilat kaki..........</p>
+    </div>
+  </div>
+
+  <div class="review-form">
+    <h3>Add a review</h3>
+    <form>
+      <label>Your rating:</label>
+      <p>☆☆☆☆☆</p>
+      <label>Your review *</label>
+      <textarea required></textarea>
+      <label>Name *</label>
+      <input type="text" required>
+      <label>Email *</label>
+      <input type="email" required>
+      <input type="checkbox"> Save my name, email, and website in this browser for the next time I comment.
+      <br><br>
+      <button type="submit">SUBMIT</button>
+    </form>
+  </div>
+
+  <div class="related-products">
+    <h2>Related products</h2>
+    <div class="related-item">
+        <a href="K.Bawang.html">
+      <img src="https://imgur.com/3wzBXrk.jpg" alt="Kerepek Bawang" width="100">
+      <p><strong>KEREPEK BAWANG (500 Gram)</strong><br>RM10.00</p>
+    </div>
+    <div class="related-item">
+        <a href="K.Ubi.html">
+      <img src="https://imgur.com/vGyu4gz.jpg" alt="Kerepek Ubi" width="100">
+      <p><strong>KEREPEK UBI (500 Gram)</strong><br>RM10.00</p>
+    </div>
+  </div>
+</div>
+<script>
+  const cartTotalEl = document.getElementById('cart-total');
+  const miniCartEl = document.getElementById('mini-cart');
+  const cartIcon = document.getElementById('cart-icon');
+
+  let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+  let cartTotal = parseFloat(localStorage.getItem('cartTotal')) || 0;
+
+  cartTotalEl.textContent = cartTotal.toFixed(2);
+  updateMiniCart();
+
+  document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const name = btn.getAttribute('data-name');
+      const price = parseFloat(btn.getAttribute('data-price'));
+      let stock = parseInt(btn.getAttribute('data-stock'));
+
+      if (stock > 0) {
+        cartItems.push({ name, price });
+        cartTotal += price;
+
+        stock--;
+        btn.setAttribute('data-stock', stock);
+
+        const stockLabel = btn.previousElementSibling;
+        stockLabel.setAttribute('data-stock', stock);
+        stockLabel.textContent = stock > 0 ? `In stock (${stock} left)` : "Out of stock";
+        stockLabel.className = stock > 0 ? 'in-stock' : 'out-of-stock';
+        btn.disabled = stock === 0;
+
+        saveCart();
+        updateMiniCart();
+      }
+    });
+  });
+
+  function updateMiniCart() {
+    if (cartItems.length === 0) {
+      miniCartEl.innerHTML = '<p>Cart is empty.</p>';
+      return;
+    }
+
+    let content = '';
+    cartItems.forEach((item, index) => {
+      content += `
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span>${index + 1}. ${item.name} - RM${item.price.toFixed(2)}</span>
+          <button onclick="removeCartItem(${index})" style="color:red; border:none; background:transparent; cursor:pointer;">✖</button>
+        </div>`;
+    });
+
+    content += `<hr><p><strong>Total: RM${cartTotal.toFixed(2)}</strong></p>`;
+    miniCartEl.innerHTML = content;
+    cartTotalEl.textContent = cartTotal.toFixed(2);
+  }
+
+  window.removeCartItem = function(index) {
+    const removed = cartItems.splice(index, 1)[0];
+    cartTotal -= removed.price;
+
+    // Restore stock
+    const button = document.querySelector(`.add-to-cart-btn[data-name="${removed.name}"]`);
+    if (button) {
+      const stockLabel = button.previousElementSibling;
+      let currentStock = parseInt(button.getAttribute('data-stock')) + 1;
+      button.setAttribute('data-stock', currentStock);
+      stockLabel.setAttribute('data-stock', currentStock);
+      stockLabel.textContent = `In stock (${currentStock} left)`;
+      stockLabel.classList.remove('out-of-stock');
+      stockLabel.classList.add('in-stock');
+      button.disabled = false;
+    }
+
+    saveCart();
+    updateMiniCart();
+  };
+
+  function saveCart() {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    localStorage.setItem('cartTotal', cartTotal.toString());
+  }
+</script>
+
+
+<footer class="footer" id="contact">
+    <div class="footer-links">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Kerepek.html">Kerepek</a></li> 
+        <li><a href="aboutus.html">About Us</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </div>
+    
+    <!-- Bahagian Logo Media Sosial -->
+    <div class="social-icons">
+        <a href="https://www.instagram.com/crispynchips" target="_blank" aria-label="Instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://www.tiktok.com/@crispynchips" target="_blank" aria-label="TikTok">
+          <i class="fab fa-tiktok"></i>
+        </a>
+        <a href="https://www.facebook.com/share/1A2tk4Ws7V/?mibextid=wwXIfr" target="_blank" aria-label="Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </div>
+    
+    <p class="copyright">
+      Copyright © 2025 crispyNchip.com
+    </p>
+  </footer>
+
+</body>
+</html>

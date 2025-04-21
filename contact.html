@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crispy & Chips</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css.css" />
+</head>
+
+<body>
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <a href="#">
+          <img src="https://imgur.com/jCvm8qO.jpg" alt="Logo" style="height: 100px;">
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Kerepek.html">Kerepek</a></li> 
+        <li><a href="aboutus.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="Cart.html">Cart</a></li>
+      </ul>
+      <div class="cart-container">
+        <div class="cart-icon"id="cart-icon">
+          <i class="fa fa-shopping-cart"></i> Cart/RM<span id="cart-total">0.00</span>
+        </div>
+        <div class="mini-cart"id="mini-cart">
+          <p>Cart is empty.</p>
+        </div>
+      </div>
+     </header>
+
+  <!-- Hero Section -->
+  <div class="hero1">
+    <h1>Contact Us</h1>
+  </div>
+
+  <!-- Contact Section -->
+  <section class="contact-container">
+    <div class="form-box">
+      <h2>Let's Get in Touch</h2>
+      <form id="contactForm">
+        <div style="display:flex; gap:10px; flex-wrap: wrap;">
+          <input type="text" name="first_name" placeholder="First Name" required aria-label="First Name">
+          <input type="text" name="last_name" placeholder="Last Name" required aria-label="Last Name">
+        </div>
+        <input type="email" name="email" placeholder="Email Address" required aria-label="Email Address">
+        <textarea name="message" placeholder="Your Message" required aria-label="Your Message"></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+
+      <!-- Response Message -->
+      <div id="responseMessage" style="margin-top: 20px; color: green; font-weight: bold;"></div>
+    </div>
+
+    <div class="contact-details">
+      <h3>Contact Details</h3>
+      <p><strong>Operating Hours:</strong><br>10:00 AM – 10:00 PM<br>Monday – Friday</p>
+      <p><strong>Location:</strong><br>Politeknik Sultan Idris Shah, Sungai Lang, 45100 Sungai Ayer Tawar, Selangor</p>
+      <p><strong>Contact Numbers:</strong><br>
+        +60 17-691 9537 (En. Haikal)<br>
+        +60 11-1285 2864 (En. Azroy)<br>
+        +60 17-320 8842 (En. Darwin)</p>
+    </div>
+
+    <!-- Google Map -->
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3980.9945580774374!2d100.81435559678955!3d3.811255299999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cb5a93916d2d37%3A0xe2b44ff8c542624b!2sPoliteknik%20Sultan%20Idris%20Shah!5e0!3m2!1sen!2smy!4v1745159380707!5m2!1sen!2smy" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </section>
+
+  <footer class="footer" id="contact">
+    <div class="footer-links">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Kerepek.html">Kerepek</a></li> 
+        <li><a href="aboutus.html">About Us</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <div class="social-icons">
+        <a href="https://www.instagram.com/crispynchips" target="_blank" aria-label="Instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://www.tiktok.com/@crispynchips" target="_blank" aria-label="TikTok">
+          <i class="fab fa-tiktok"></i>
+        </a>
+        <a href="https://www.facebook.com/share/1A2tk4Ws7V/?mibextid=wwXIfr" target="_blank" aria-label="Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </div>
+
+    <p class="copyright">
+      Copyright © 2025 crispyNchip.com
+    </p>
+  </footer>
+
+  <script>
+    document.getElementById("contactForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const firstName = document.querySelector('[name="first_name"]').value.trim();
+      const lastName = document.querySelector('[name="last_name"]').value.trim();
+      const email = document.querySelector('[name="email"]').value.trim();
+      const message = document.querySelector('[name="message"]').value.trim();
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      const responseBox = document.getElementById("responseMessage");
+
+      if (!firstName || !lastName) {
+        alert("Please enter your full name.");
+      } else if (!emailPattern.test(email)) {
+        alert("Please enter a valid email address.");
+      } else if (!message) {
+        alert("Please enter your message.");
+      } else {
+        document.getElementById("contactForm").reset();
+        responseBox.textContent = "Thank you for your response!";
+      }
+    });
+
+    window.addEventListener("scroll", function () {
+      const hero = document.querySelector(".hero");
+      let offset = window.pageYOffset;
+      hero.style.backgroundPositionY = offset * 0.5 + "px";
+    });
+    const cartTotalEl = document.getElementById('cart-total');
+  const miniCartEl = document.getElementById('mini-cart');
+  const cartIcon = document.getElementById('cart-icon');
+
+  let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+  let cartTotal = parseFloat(localStorage.getItem('cartTotal')) || 0;
+
+  cartTotalEl.textContent = cartTotal.toFixed(2);
+  updateMiniCart();
+
+  document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const name = btn.getAttribute('data-name');
+      const price = parseFloat(btn.getAttribute('data-price'));
+      let stock = parseInt(btn.getAttribute('data-stock'));
+
+      if (stock > 0) {
+        cartItems.push({ name, price });
+        cartTotal += price;
+
+        stock--;
+        btn.setAttribute('data-stock', stock);
+
+        const stockLabel = btn.previousElementSibling;
+        stockLabel.setAttribute('data-stock', stock);
+        stockLabel.textContent = stock > 0 ? `In stock (${stock} left)` : "Out of stock";
+        stockLabel.className = stock > 0 ? 'in-stock' : 'out-of-stock';
+        btn.disabled = stock === 0;
+
+        saveCart();
+        updateMiniCart();
+      }
+    });
+  });
+
+  function updateMiniCart() {
+    if (cartItems.length === 0) {
+      miniCartEl.innerHTML = '<p>Cart is empty.</p>';
+      return;
+    }
+
+    let content = '';
+    cartItems.forEach((item, index) => {
+      content += `
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span>${index + 1}. ${item.name} - RM${item.price.toFixed(2)}</span>
+          <button onclick="removeCartItem(${index})" style="color:red; border:none; background:transparent; cursor:pointer;">✖</button>
+        </div>`;
+    });
+
+    content += `<hr><p><strong>Total: RM${cartTotal.toFixed(2)}</strong></p>`;
+    miniCartEl.innerHTML = content;
+    cartTotalEl.textContent = cartTotal.toFixed(2);
+  }
+
+  window.removeCartItem = function(index) {
+    const removed = cartItems.splice(index, 1)[0];
+    cartTotal -= removed.price;
+
+    // Restore stock
+    const button = document.querySelector(`.add-to-cart-btn[data-name="${removed.name}"]`);
+    if (button) {
+      const stockLabel = button.previousElementSibling;
+      let currentStock = parseInt(button.getAttribute('data-stock')) + 1;
+      button.setAttribute('data-stock', currentStock);
+      stockLabel.setAttribute('data-stock', currentStock);
+      stockLabel.textContent = `In stock (${currentStock} left)`;
+      stockLabel.classList.remove('out-of-stock');
+      stockLabel.classList.add('in-stock');
+      button.disabled = false;
+    }
+
+    saveCart();
+    updateMiniCart();
+  };
+
+  function saveCart() {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    localStorage.setItem('cartTotal', cartTotal.toString());
+  }
+  </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crispy & Chips</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css.css" />
+</head>
+<style></style>
+
+<body>
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <a href="#">
+          <img src="https://imgur.com/jCvm8qO.jpg" alt="Logo" style="height: 100px;">
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Kerepek.html">Kerepek</a></li> 
+        <li><a href="aboutus.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="Cart.html">Cart</a></li>
+      </ul>
+      </ul>
+      <div class="cart-container">
+        <div class="cart-icon"id="cart-icon">
+          <i class="fa fa-shopping-cart"></i> Cart/RM<span id="cart-total">0.00</span>
+        </div>
+        <div class="mini-cart"id="mini-cart">
+          <p>Cart is empty.</p>
+        </div>
+      </div>
+      
+  </header>
+
+  <!-- Hero -->
+  <section class="hero-section">
+    <h1>Mission</h1>
+    <p>To deliver high-quality, delicious 'KEREPEK' that bring joy to every home, while promoting local flavors and supporting sustainable practices.</p>
+  </section>
+
+  <!-- Mission Section -->
+  <section class="mission-section">
+    <div class="mission-card">
+      <div class="mission-images">
+        <img src="https://imgur.com/TQsCOkz.png" alt="Kerepek Pisang">
+        <img src="https://imgur.com/HFf58zE.png" alt="Kerepek bawang">
+      </div>
+      <div class="mission-text">
+        <h2><em>To Achieve This :</em></h2>
+        <ol>
+          <li>Our purpose is to delight our customers with delicious, high-quality <strong>‘Kerepek’</strong> that bring joy and connection to every household. We aim to provide lifestyle solutions by offering convenient, flavorful snacks that enhance family moments and celebrations.</li>
+          <li>We strive for innovation and excellence in our <strong>‘Kerepek’</strong> products, ensuring they reflect our commitment to tradition, quality, and authenticity.</li>
+          <li>We create purposeful snacks that are not just tasty but also promote togetherness and appreciation of local heritage.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vision Section -->
+  <section class="vision-section">
+    <div class="vision-content">
+    <h2>Vision</h2>
+    <p>To be the leading online platform for kerepek, recognized for quality, authenticity, and innovation, connecting communities through the love of snacks.</p>
+    <div> 
+  </section>
+
+ <script>
+  const cartTotalEl = document.getElementById('cart-total');
+  const miniCartEl = document.getElementById('mini-cart');
+  const cartIcon = document.getElementById('cart-icon');
+
+  let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+  let cartTotal = parseFloat(localStorage.getItem('cartTotal')) || 0;
+
+  cartTotalEl.textContent = cartTotal.toFixed(2);
+  updateMiniCart();
+
+  document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const name = btn.getAttribute('data-name');
+      const price = parseFloat(btn.getAttribute('data-price'));
+      let stock = parseInt(btn.getAttribute('data-stock'));
+
+      if (stock > 0) {
+        cartItems.push({ name, price });
+        cartTotal += price;
+
+        stock--;
+        btn.setAttribute('data-stock', stock);
+
+        const stockLabel = btn.previousElementSibling;
+        stockLabel.setAttribute('data-stock', stock);
+        stockLabel.textContent = stock > 0 ? `In stock (${stock} left)` : "Out of stock";
+        stockLabel.className = stock > 0 ? 'in-stock' : 'out-of-stock';
+        btn.disabled = stock === 0;
+
+        saveCart();
+        updateMiniCart();
+      }
+    });
+  });
+
+  function updateMiniCart() {
+    if (cartItems.length === 0) {
+      miniCartEl.innerHTML = '<p>Cart is empty.</p>';
+      return;
+    }
+
+    let content = '';
+    cartItems.forEach((item, index) => {
+      content += `
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span>${index + 1}. ${item.name} - RM${item.price.toFixed(2)}</span>
+          <button onclick="removeCartItem(${index})" style="color:red; border:none; background:transparent; cursor:pointer;">✖</button>
+        </div>`;
+    });
+
+    content += `<hr><p><strong>Total: RM${cartTotal.toFixed(2)}</strong></p>`;
+    miniCartEl.innerHTML = content;
+    cartTotalEl.textContent = cartTotal.toFixed(2);
+  }
+
+  window.removeCartItem = function(index) {
+    const removed = cartItems.splice(index, 1)[0];
+    cartTotal -= removed.price;
+
+    // Restore stock
+    const button = document.querySelector(`.add-to-cart-btn[data-name="${removed.name}"]`);
+    if (button) {
+      const stockLabel = button.previousElementSibling;
+      let currentStock = parseInt(button.getAttribute('data-stock')) + 1;
+      button.setAttribute('data-stock', currentStock);
+      stockLabel.setAttribute('data-stock', currentStock);
+      stockLabel.textContent = `In stock (${currentStock} left)`;
+      stockLabel.classList.remove('out-of-stock');
+      stockLabel.classList.add('in-stock');
+      button.disabled = false;
+    }
+
+    saveCart();
+    updateMiniCart();
+  };
+
+  function saveCart() {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    localStorage.setItem('cartTotal', cartTotal.toString());
+  }
+ </script>
+
+
+  <footer class="footer" id="contact">
+    <div class="footer-links">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Kerepek.html">Kerepek</a></li> 
+        <li><a href="aboutus.html">About Us</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </div>
+    
+    <!-- Bahagian Logo Media Sosial -->
+    <div class="social-icons">
+      <a href="https://www.instagram.com/crispynchips" target="_blank" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a href="https://www.tiktok.com/@crispynchips" target="_blank" aria-label="TikTok">
+        <i class="fab fa-tiktok"></i>
+      </a>
+      <a href="https://www.facebook.com/share/1A2tk4Ws7V/?mibextid=wwXIfr" target="_blank" aria-label="Facebook">
+        <i class="fab fa-facebook"></i>
+      </a>
+    </div>
+    
+    <p class="copyright">
+      Copyright © 2025 crispyNchip.com
+    </p>
+  </footer>
+</body>
+</html>

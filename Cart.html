@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cart – cart</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css.css"/>
+</head>
+<body>
+   <!-- Navbar -->
+   <header class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <a href="#">
+          <img src="https://imgur.com/jCvm8qO.jpg" alt="Logo" style="height: 100px;">
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Kerepek.html">Kerepek</a></li> 
+        <li><a href="aboutus.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="Cart.html">Cart</a></li>
+      </ul>
+      </ul>
+      <div class="cart-container">
+        <div class="cart-icon"id="cart-icon">
+          <i class="fa fa-shopping-cart"></i> Cart/RM<span id="cart-total">0.00</span>
+        </div>
+        <div class="mini-cart"id="mini-cart">
+          <p>Cart is empty.</p>
+        </div>
+      </div>
+      
+    </header>
+
+    <!-- Container wrapping the cart section -->
+    <div class="container">
+      <div id="cart-items"></div>
+    
+      <section id="main-cart">
+        <h2>Your Cart</h2>
+        <div id="main-cart-items">
+          <p>Your cart is currently empty.</p>
+        </div>
+        <a href="Kerepek.html" class="btn">Return to Shop</a>
+        <a href="Checkout.html" class="btn continue-to-pay">Continue to Pay</a>
+
+      </section>
+    </div>
+    
+  <script>
+    const cartTotalEl = document.getElementById('cart-total');
+    const miniCartEl = document.getElementById('mini-cart');
+    const cartIcon = document.getElementById('cart-icon');
+    const mainCartItemsEl = document.getElementById('main-cart-items');
+  
+    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    let cartTotal = parseFloat(localStorage.getItem('cartTotal')) || 0;
+  
+    cartTotalEl.textContent = cartTotal.toFixed(2);
+    updateMiniCart();
+    renderMainCart();
+  
+    // (existing) Add to cart handler
+    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const name = btn.getAttribute('data-name');
+        const price = parseFloat(btn.getAttribute('data-price'));
+        let stock = parseInt(btn.getAttribute('data-stock'));
+  
+        if (stock > 0) {
+          cartItems.push({ name, price });
+          cartTotal += price;
+  
+          stock--;
+          btn.setAttribute('data-stock', stock);
+  
+          const stockLabel = btn.previousElementSibling;
+          stockLabel.setAttribute('data-stock', stock);
+          stockLabel.textContent = stock > 0 ? `In stock (${stock} left)` : "Out of stock";
+          stockLabel.className = stock > 0 ? 'in-stock' : 'out-of-stock';
+          btn.disabled = stock === 0;
+  
+          saveCart();
+          updateMiniCart();
+          renderMainCart();
+        }
+      });
+    });
+  
+    function updateMiniCart() {
+      if (cartItems.length === 0) {
+        miniCartEl.innerHTML = '<p>Cart is empty.</p>';
+        return;
+      }
+  
+      let content = '';
+      cartItems.forEach((item, index) => {
+        content += `
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>${index + 1}. ${item.name} - RM${item.price.toFixed(2)}</span>
+            <button onclick="removeCartItem(${index})" style="color:red; border:none; background:transparent; cursor:pointer;">✖</button>
+          </div>`;
+      });
+  
+      content += `<hr><p><strong>Total: RM${cartTotal.toFixed(2)}</strong></p>`;
+      miniCartEl.innerHTML = content;
+      cartTotalEl.textContent = cartTotal.toFixed(2);
+    }
+  
+    function renderMainCart() {
+      if (cartItems.length === 0) {
+        mainCartItemsEl.innerHTML = '<p>Your cart is currently empty.</p>';
+        return;
+      }
+  
+      let html = '<ul style="list-style: none; padding: 0;">';
+      cartItems.forEach((item, index) => {
+        html += `
+          <li style="margin-bottom: 10px;">
+            ${index + 1}. ${item.name} - RM${item.price.toFixed(2)}
+            <button onclick="removeCartItem(${index})" style="margin-left:10px; color: red; background: none; border: none; cursor: pointer;">✖</button>
+          </li>
+        `;
+      });
+      html += `</ul><p><strong>Total: RM${cartTotal.toFixed(2)}</strong></p>`;
+      mainCartItemsEl.innerHTML = html;
+    }
+  
+    window.removeCartItem = function(index) {
+      const removed = cartItems.splice(index, 1)[0];
+      cartTotal -= removed.price;
+  
+      // Restore stock
+      const button = document.querySelector(`.add-to-cart-btn[data-name="${removed.name}"]`);
+      if (button) {
+        const stockLabel = button.previousElementSibling;
+        let currentStock = parseInt(button.getAttribute('data-stock')) + 1;
+        button.setAttribute('data-stock', currentStock);
+        stockLabel.setAttribute('data-stock', currentStock);
+        stockLabel.textContent = `In stock (${currentStock} left)`;
+        stockLabel.classList.remove('out-of-stock');
+        stockLabel.classList.add('in-stock');
+        button.disabled = false;
+      }
+  
+      saveCart();
+      updateMiniCart();
+      renderMainCart();
+    };
+  
+    function saveCart() {
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      localStorage.setItem('cartTotal', cartTotal.toString());
+    }
+  </script>
+  
+<footer class="footer" id="contact">
+  <div class="footer-links">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="Kerepek.html">Kerepek</a></li> 
+      <li><a href="aboutus.html">About Us</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+  </div>
+  
+  
+  <!-- Bahagian Logo Media Sosial -->
+  <div class="social-icons">
+      <a href="https://www.instagram.com/crispynchips" target="_blank" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a href="https://www.tiktok.com/@crispynchips" target="_blank" aria-label="TikTok">
+        <i class="fab fa-tiktok"></i>
+      </a>
+      <a href="https://www.facebook.com/share/1A2tk4Ws7V/?mibextid=wwXIfr" target="_blank" aria-label="Facebook">
+        <i class="fab fa-facebook"></i>
+      </a>
+    </div>
+  
+  <p class="copyright">
+    Copyright © 2025 crispyNchip.com
+  </p>
+</footer>
+</html>

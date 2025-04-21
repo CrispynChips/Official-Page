@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout</title>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css.css"/>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      margin-top: 100px;
+      text-align: center;
+      color: #333;
+    }
+
+    #checkout-items {
+      margin-bottom: 20px;
+    }
+    #checkout-total {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: right;
+}
+
+    .item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .total {
+      font-size: 18px;
+      font-weight: bold;
+      text-align: right;
+      margin: 20px 0;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 10px;
+      margin-top: 10px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<h2>Your Cart</h2>
+<div class="container">
+    <div id="checkout-items"></div>
+    <section id="main-cart">
+       
+<body>
+    <div id="checkout-items">
+       
+      </div>
+      <div id="checkout-total">
+        <strong>Total: RM0.00</strong>
+      </div>
+      <div style="text-align: center; margin-top: 20px;">
+        <button onclick="location.href='https://www.cimbclicks.com.my/'" class="btn online-banking">Online Banking</button>
+        <button onclick="location.href='https://www.touchngo.com.my/'" class="btn tng-button">Touch 'n Go</button>
+      </div>
+      
+</body>
+<script>
+    // Elemen di mana troli akan dipaparkan
+const checkoutItemsEl = document.getElementById('checkout-items');
+const checkoutTotalEl = document.getElementById('checkout-total');
+
+// Ambil data troli dari localStorage
+let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+let cartTotal = parseFloat(localStorage.getItem('cartTotal')) || 0;
+
+// Paparkan senarai item dalam troli
+function renderCheckoutItems() {
+  if (cartItems.length === 0) {
+    checkoutItemsEl.innerHTML = '<p>Your cart is currently empty.</p>';
+    checkoutTotalEl.textContent = `Total: RM0.00`;
+    return;
+  }
+
+  let html = '<ul style="list-style: none; padding: 0;">';
+  cartItems.forEach((item, index) => {
+    html += `
+      <li style="margin-bottom: 10px;">
+        ${index + 1}. ${item.name} - RM${item.price.toFixed(2)}
+      </li>`;
+  });
+  html += '</ul>';
+  checkoutItemsEl.innerHTML = html;
+  checkoutTotalEl.textContent = `Total: RM${cartTotal.toFixed(2)}`;
+}
+
+// Panggil fungsi untuk memaparkan data troli
+renderCheckoutItems();
+
+</script>
+</html>
